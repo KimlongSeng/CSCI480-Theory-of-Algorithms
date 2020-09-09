@@ -2,6 +2,31 @@
 #include <fstream>
 using namespace std;
 
+
+
+// int size, howmany, i, data;
+// // specify size of array needed
+// std::cout << "Size of array needed? ";
+// std::cin >> size;
+// // declare it
+// IntIndColl arr(size); // declare a safe array
+
+// // fill a part of the array
+// std::cout << "How much of the array is occupied?";
+// std::cin >> howmany;
+// for (i=0;i<howmany;i++)
+// {
+// std::cin >> data;
+// arr.Store(i,data); // use the store function
+// }
+// // test the retrieve function
+// std::cout << "Which item do you want? ";
+// std::cin >> i;
+// data = arr.Retrieve(i);
+// std::cout << "arr[" << i << "] = " << data << endl;
+
+
+
 int linearSearch(long long int  a[],int size,int k)
 {
 int i = 1;
