@@ -2,32 +2,7 @@
 #include <fstream>
 using namespace std;
 
-
-
-// int size, howmany, i, data;
-// // specify size of array needed
-// std::cout << "Size of array needed? ";
-// std::cin >> size;
-// // declare it
-// IntIndColl arr(size); // declare a safe array
-
-// // fill a part of the array
-// std::cout << "How much of the array is occupied?";
-// std::cin >> howmany;
-// for (i=0;i<howmany;i++)
-// {
-// std::cin >> data;
-// arr.Store(i,data); // use the store function
-// }
-// // test the retrieve function
-// std::cout << "Which item do you want? ";
-// std::cin >> i;
-// data = arr.Retrieve(i);
-// std::cout << "arr[" << i << "] = " << data << endl;
-
-
-
-int linearSearch(long long int  a[],int size,int k)
+int linearSearch(int a[],int size,int k)
 {
 int i = 1;
 bool found = false;
@@ -44,7 +19,7 @@ if (found == false) {cout<<"Element not found" << endl;}
 return found;
 }
 
-int BothWay_LinearSearch(long long int  a[],int size,int k)
+int BothWay_LinearSearch(int  a[],int size,int k)
 {
     int front = 0, back = size - 1;
     bool found =false;
@@ -53,7 +28,7 @@ int BothWay_LinearSearch(long long int  a[],int size,int k)
         if (a[front] == k || a[back] == k)
         {
             found =true;
-            cout <<"Element  found at location : "<< front + 1 <<endl;
+            cout <<"Element founded " <<endl;
         };
             front++;
             back--;
@@ -66,8 +41,9 @@ int BothWay_LinearSearch(long long int  a[],int size,int k)
 int main()
 {
     ifstream  inf("RanNum.txt");
-    long long int a[100000];
     int size = 0, k, flag=0 ,i;
+    int*a =NULL;
+    a = new int[100000];
     bool found =false;
 while (!inf.eof())
 {
@@ -78,6 +54,8 @@ cout << "Please enter the number that you want to search for : ";
 cin >> k;
 BothWay_LinearSearch(a,size,k);
 
+delete []a;
+a = NULL;
 inf.close();
     return 0;
 }
