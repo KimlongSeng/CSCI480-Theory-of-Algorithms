@@ -43,7 +43,7 @@ int main()
     ifstream  inf("RanNum.txt");
     int size = 0, k, flag=0 ,i;
     int*a =NULL;
-    a = new int[100000];
+    a = new int[2000000];
     bool found =false;
 while (!inf.eof())
 {
