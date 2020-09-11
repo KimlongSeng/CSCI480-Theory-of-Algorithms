@@ -8,14 +8,14 @@ using namespace std;
 void insertion_sort( int a[], int size)
 {
     int i,k,j;
-    for(i=0; i<size; i++)
+    for(i=1; i<size; i++)
     {
         k = a[i];
         j = i - 1;
         while(j>= 0 && a[j] > k )
         {
             a[j+1] = a[j];
-            i = j -1;
+            j = j -1;
         }
         a[j+1] =k ;
     }
@@ -30,7 +30,7 @@ void V2insertion_sort(long long int b[], int size)
         while(j>= 0 && b[j] > k )
         {
             b[j+1] = b[j];
-            i = j -1;
+            j = j -1;
         }
         b[j+1] =k ;
     }
@@ -49,9 +49,11 @@ void merge(int a[],int l,int m,int r )
     }
     for (j=0;j<q;j++)
     {
-        R[j]=a[r+1];
+        R[j]=a[m+1+j];
     }
-    i=0,j=0,k=l;
+    i=0;
+    j=0;
+    k=l;
     while (i<p && j<q)
     {
         if (L[i]<=R[j])
@@ -66,19 +68,31 @@ void merge(int a[],int l,int m,int r )
         }
         k++;
     }
-    if (i = p)
-    {
-        a[k]=R[j];
-        j++;
-        k++;
-    }
-    else
-    {
-        a[k]=L[i];
+     while(i < p) {
+        a[k] = L[i];
         i++;
         k++;
     }
+     while(j < q) {
+        a[k] = R[j];
+        j++;
+        k++;
+    }
 }
+
+//     if (i = p)
+//     {
+//         a[k]=R[j];
+//         j++;
+//         k++;
+//     }
+//     else
+//     {
+//         a[k]=L[i];
+//         i++;
+//         k++;
+//     }
+// }
 
 void merge_sort(int a[],int l,int r)
 {
@@ -148,21 +162,48 @@ int main()
 {
      ifstream  inf("ForSortNum.txt");
     int size = 0, k, flag=0 ,i;
-    long long int *b=NULL;
-    b = new long long int[2000000];
-    int*a =NULL;
-    a = new int[2000000];
+
+    long long int *b=NULL , *b1 =NULL;
+    b = new long long int[1000000];
+    b1 =new long long int [1000000];
+    int*a =NULL, *a1 = NULL;
+    a = new int[300000];
+    a1= new int[300000];
+    int a_size = sizeof(a)/sizeof(a[0]);
+    
+    clock_t begin, end;
+    double time1,time2,time3,time4;
 
     while (!inf.eof())
     {
         inf >> a[size];
+        a1[size]=a[size];
         size++;
     }
 
+    begin = clock();
+    merge_sort(a,0,size-1);
+     end = clock();
+    time2 =(double)(end-begin)/CLOCKS_PER_SEC;
+    
+
+
+    // begin = clock();
+    // insertion_sort(a1,size);
+    // end = clock();
+    // time1 = (double)(end-begin)/CLOCKS_PER_SEC;
+
+   
+
+    cout << "Time spend on insertion sort = "<< time1 <<endl;
+    cout << "Time spend on merge sort = "<< time2 <<endl;
 
 
 
-
+    delete []a1;
+    a1 = NULL;
+    delete []b1;
+    b1 = NULL;
     delete []b;
     b = NULL;
     delete []a;
