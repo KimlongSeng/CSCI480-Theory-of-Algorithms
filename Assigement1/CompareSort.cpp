@@ -1,11 +1,7 @@
 #include <iostream>
-#include <fstream>
 using namespace std;
 
-
-
-
-void insertion_sort( int a[], int size)
+void insertion_sort(int a[], int size)
 {
     int i,k,j;
     for(i=1; i<size; i++)
@@ -17,7 +13,7 @@ void insertion_sort( int a[], int size)
             a[j+1] = a[j];
             j = j -1;
         }
-        a[j+1] =k ;
+        a[j+1] = k ;
     }
 }
 void V2insertion_sort(long long int b[], int size)
@@ -35,8 +31,6 @@ void V2insertion_sort(long long int b[], int size)
         b[j+1] =k ;
     }
 }
-
-
 void merge(int a[],int l,int m,int r )
 {
     int i, j, k;
@@ -68,32 +62,30 @@ void merge(int a[],int l,int m,int r )
         }
         k++;
     }
-     while(i < p) {
+    // if (i = p)
+    // {
+    //     a[k]=R[j];
+    //     j++;
+    //     k++;
+    // }
+    // else
+    // {
+    //     a[k]=L[i];
+    //     i++;
+    //     k++;
+    // }
+    while(i < p) {
         a[k] = L[i];
         i++;
         k++;
     }
-     while(j < q) {
+    // copy the remaining elements of R vector if there's any
+    while(j < q) {
         a[k] = R[j];
         j++;
         k++;
     }
 }
-
-//     if (i = p)
-//     {
-//         a[k]=R[j];
-//         j++;
-//         k++;
-//     }
-//     else
-//     {
-//         a[k]=L[i];
-//         i++;
-//         k++;
-//     }
-// }
-
 void merge_sort(int a[],int l,int r)
 {
     if (l < r)
@@ -104,7 +96,6 @@ void merge_sort(int a[],int l,int r)
         merge(a,l,m,r);
     }
 }
-
 void V2merge(long long int b[],int l,int m,int r )
 {
     int i, j, k;
@@ -158,56 +149,74 @@ void V2merge_sort(long long int b[],int l,int r)
     }
 }
 
+int evenodd()
+{
+    int q = rand() % 2;
+    if (q > 0)
+    {
+        return 1;
+    }
+    else return -1;
+}
+
 int main()
 {
-     ifstream  inf("ForSortNum.txt");
-    int size = 0, k, flag=0 ,i;
-
+     
+    int size = 0, k;
+    cout << "What is the size of array "<<endl;
+    cin >> size;
+   
     long long int *b=NULL , *b1 =NULL;
-    b = new long long int[1000000];
-    b1 =new long long int [1000000];
-    int*a =NULL, *a1 = NULL;
-    a = new int[300000];
-    a1= new int[300000];
-    int a_size = sizeof(a)/sizeof(a[0]);
+    b = new long long int[size +1];
+    b1 =new long long int[size +1];
+    int* a = NULL;
+    int* a1 = NULL;
+    a = new int[size+ 1];
+    a1= new int[size+ 1];
     
     clock_t begin, end;
     double time1,time2,time3,time4;
 
-    while (!inf.eof())
+   
+    int iupbound = 2147483646;
+    srand(700452202);
+    int range_int;
+    for (int i=0 ; i <= size;i++)
     {
-        inf >> a[size];
-        a1[size]=a[size];
-        size++;
-    }
+        range_int = (rand() % iupbound) * evenodd();
+        a[i] = range_int;
+        a1[i] = a[i];
+        b[i] = a[i];
+        b1[i] = a[i];
 
+    }
+  
     begin = clock();
-    merge_sort(a,0,size-1);
+    //insertion_sort(a,size);
+    end = clock();
+    time1 = (double)(end-begin)/CLOCKS_PER_SEC;
+
+
+     begin = clock();
+     merge_sort(a,0,size-1);
      end = clock();
-    time2 =(double)(end-begin)/CLOCKS_PER_SEC;
+     time2 =(double)(end-begin)/CLOCKS_PER_SEC;
     
 
 
-    // begin = clock();
-    // insertion_sort(a1,size);
-    // end = clock();
-    // time1 = (double)(end-begin)/CLOCKS_PER_SEC;
-
    
 
-    cout << "Time spend on insertion sort = "<< time1 <<endl;
-    cout << "Time spend on merge sort = "<< time2 <<endl;
+    cout << "Time spend on insertion sort (using int)= "<< time1 <<endl;
+    cout << "Time spend on merge sort (using int)  = "<< time2 <<endl;
 
 
-
+    delete []a;
+    a = NULL;
     delete []a1;
     a1 = NULL;
     delete []b1;
     b1 = NULL;
     delete []b;
     b = NULL;
-    delete []a;
-    a = NULL;
-    inf.close();
     return 0;
 }

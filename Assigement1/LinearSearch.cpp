@@ -43,13 +43,14 @@ int main()
     ifstream  inf("RanNum.txt");
     int size = 0, k, flag=0 ,i;
     int*a =NULL;
-    a = new int[2000000];
+    a = new int[size];
     bool found =false;
 while (!inf.eof())
 {
     inf >> a[size];
-    size++;
 }
+// cout << "What is the size of array "<<endl;
+// cin>>size;
 cout << "Please enter the number that you want to search for : ";
 cin >> k;
 BothWay_LinearSearch(a,size,k);
