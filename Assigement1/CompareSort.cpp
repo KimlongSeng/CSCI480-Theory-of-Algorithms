@@ -62,41 +62,31 @@ void merge(int a[],int l,int m,int r )
         }
         k++;
     }
-    // if (i = p)
-    // {
-    //     a[k]=R[j];
-    //     j++;
-    //     k++;
-    // }
-    // else
-    // {
-    //     a[k]=L[i];
-    //     i++;
-    //     k++;
-    // }
-    while(i < p) {
-        a[k] = L[i];
-        i++;
-        k++;
-    }
-    // copy the remaining elements of R vector if there's any
-    while(j < q) {
-        a[k] = R[j];
+    if (i = p)
+    {
+        a[k]=R[j];
         j++;
         k++;
     }
+    else
+    {
+        a[k]=L[i];
+        i++;
+        k++;
+    }
+   
 }
 void merge_sort(int a[],int l,int r)
 {
     if (l < r)
     {
-        int m =l + (r-l)/2;
+        int m = l + (r-l)/2;
         merge_sort(a,l,m);
         merge_sort(a,m+1,r);
         merge(a,l,m,r);
     }
 }
-void V2merge(long long int b[],int l,int m,int r )
+void V2merge(long long int a[],int l,int m,int r )
 {
     int i, j, k;
     int p = m-l +1;
@@ -104,48 +94,48 @@ void V2merge(long long int b[],int l,int m,int r )
     int L[p], R[q];
     for (i=0;i<p;i++)
     {
-        L[i]=b[l+i];
+        L[i]=a[l+i];
     }
     for (j=0;j<q;j++)
     {
-        R[j]=b[r+1];
+        R[j]=a[r+1];
     }
     i=0,j=0,k=l;
     while (i<p && j<q)
     {
         if (L[i]<=R[j])
         {
-            b[k]=L[i];
+            a[k]=L[i];
             i++;
         }
         else
         {
-            b[k]=R[j];
+            a[k]=R[j];
             j++;
         }
         k++;
     }
     if (i = p)
     {
-        b[k]=R[j];
+        a[k]=R[j];
         j++;
         k++;
     }
     else
     {
-        b[k]=L[i];
+        a[k]=L[i];
         i++;
         k++;
     }
 }
-void V2merge_sort(long long int b[],int l,int r)
+void V2merge_sort(long long int a[],int l,int r)
 {
     if (l < r)
     {
         int m =l + (r-l)/2;
-        V2merge_sort(b,l,m);
-        V2merge_sort(b,m+1,r);
-        V2merge(b,l,m,r);
+        V2merge_sort(a,l,m);
+        V2merge_sort(a,m+1,r);
+        V2merge(a,l,m,r);
     }
 }
 
@@ -163,7 +153,7 @@ int main()
 {
      
     int size = 0, k;
-    cout << "What is the size of array "<<endl;
+    cout << "What is the size of array?"<<endl;
     cin >> size;
    
     long long int *b=NULL , *b1 =NULL;
@@ -179,35 +169,45 @@ int main()
 
    
     int iupbound = 2147483646;
+   long long  int Long_intupb =9223372036854775807;
     srand(700452202);
-    int range_int;
+    double range_int, range_longint ;
     for (int i=0 ; i <= size;i++)
     {
         range_int = (rand() % iupbound) * evenodd();
         a[i] = range_int;
         a1[i] = a[i];
-        b[i] = a[i];
-        b1[i] = a[i];
-
+        range_longint = (rand() % Long_intupb) * evenodd();
+        b[i] = range_longint;
+        b1[i] = b[i];
+        range_int = 0;
+        range_longint =0;
     }
-  
+
     begin = clock();
-    //insertion_sort(a,size);
+    insertion_sort(a,size);
     end = clock();
     time1 = (double)(end-begin)/CLOCKS_PER_SEC;
 
-
      begin = clock();
-     merge_sort(a,0,size-1);
+     merge_sort(a1,0,size-1);
      end = clock();
      time2 =(double)(end-begin)/CLOCKS_PER_SEC;
+
+    begin = clock();
+    V2insertion_sort(b,size);
+    end = clock();
+    time3 = (double)(end-begin)/CLOCKS_PER_SEC;
+
+     begin = clock();
+     V2merge_sort(b1,0,size-1);
+     end = clock();
+     time4 =(double)(end-begin)/CLOCKS_PER_SEC;
     
-
-
-   
-
-    cout << "Time spend on insertion sort (using int)= "<< time1 <<endl;
+    cout << "Time spend on insertion sort (using int) = "<< time1 <<endl;
     cout << "Time spend on merge sort (using int)  = "<< time2 <<endl;
+    cout << "Time spend on insertion sort (using long int) = "<< time3 <<endl;
+    cout << "Time spend on merge sort (using long int)  = "<< time4 <<endl;
 
 
     delete []a;
