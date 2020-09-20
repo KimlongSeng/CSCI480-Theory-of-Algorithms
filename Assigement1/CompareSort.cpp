@@ -34,7 +34,7 @@ void V2insertion_sort(long long int b[], int size)
 void merge(int a[],int l,int m,int r )
 {
     int i, j, k;
-    int p = m-l +1;
+    int p = m - l + 1;
     int q = r - m ;
     int L[p], R[q];
     for (i=0;i<p;i++)
@@ -62,18 +62,16 @@ void merge(int a[],int l,int m,int r )
         }
         k++;
     }
-    if (i = p)
-    {
-        a[k]=R[j];
-        j++;
-        k++;
-    }
-    else
-    {
-        a[k]=L[i];
-        i++;
-        k++;
-    }
+       while (i < p) { 
+        a[k] = L[i]; 
+        i++; 
+        k++; 
+    } 
+    while (j < q) { 
+        a[k] = R[j]; 
+        j++; 
+        k++; 
+    } 
    
 }
 void merge_sort(int a[],int l,int r)
@@ -88,8 +86,8 @@ void merge_sort(int a[],int l,int r)
 }
 void V2merge(long long int a[],int l,int m,int r )
 {
-    int i, j, k;
-    int p = m-l +1;
+      int i, j, k;
+    int p = m - l + 1;
     int q = r - m ;
     int L[p], R[q];
     for (i=0;i<p;i++)
@@ -98,9 +96,11 @@ void V2merge(long long int a[],int l,int m,int r )
     }
     for (j=0;j<q;j++)
     {
-        R[j]=a[r+1];
+        R[j]=a[m+1+j];
     }
-    i=0,j=0,k=l;
+    i=0;
+    j=0;
+    k=l;
     while (i<p && j<q)
     {
         if (L[i]<=R[j])
@@ -115,18 +115,17 @@ void V2merge(long long int a[],int l,int m,int r )
         }
         k++;
     }
-    if (i = p)
-    {
-        a[k]=R[j];
-        j++;
-        k++;
-    }
-    else
-    {
-        a[k]=L[i];
-        i++;
-        k++;
-    }
+       while (i < p) { 
+        a[k] = L[i]; 
+        i++; 
+        k++; 
+    } 
+    while (j < q) { 
+        a[k] = R[j]; 
+        j++; 
+        k++; 
+    } 
+   
 }
 void V2merge_sort(long long int a[],int l,int r)
 {
@@ -171,7 +170,8 @@ int main()
     int iupbound = 2147483646;
    long long  int Long_intupb =9223372036854775807;
     srand(700452202);
-    double range_int, range_longint ;
+    int range_int; 
+    long long int range_longint ;
     for (int i=0 ; i <= size;i++)
     {
         range_int = (rand() % iupbound) * evenodd();
@@ -189,26 +189,25 @@ int main()
     end = clock();
     time1 = (double)(end-begin)/CLOCKS_PER_SEC;
 
-     begin = clock();
-     merge_sort(a1,0,size-1);
-     end = clock();
-     time2 =(double)(end-begin)/CLOCKS_PER_SEC;
+    begin = clock();
+    merge_sort(a1,0,size-1);
+    end = clock();
+    time2 =(double)(end-begin)/CLOCKS_PER_SEC;
 
     begin = clock();
     V2insertion_sort(b,size);
     end = clock();
     time3 = (double)(end-begin)/CLOCKS_PER_SEC;
 
-     begin = clock();
-     V2merge_sort(b1,0,size-1);
-     end = clock();
-     time4 =(double)(end-begin)/CLOCKS_PER_SEC;
+    begin = clock();
+    V2merge_sort(b1,0,size-1);
+    end = clock();
+    time4 =(double)(end-begin)/CLOCKS_PER_SEC;
     
     cout << "Time spend on insertion sort (using int) = "<< time1 <<endl;
     cout << "Time spend on merge sort (using int)  = "<< time2 <<endl;
     cout << "Time spend on insertion sort (using long int) = "<< time3 <<endl;
     cout << "Time spend on merge sort (using long int)  = "<< time4 <<endl;
-
 
     delete []a;
     a = NULL;
