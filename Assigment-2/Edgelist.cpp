@@ -4,6 +4,7 @@
 
 using namespace std;
 
+
 class ParPtrTree {
   
   public:
@@ -48,90 +49,116 @@ struct Edge {
     int src , des , weight;
   string cityname ;
   Edge* next, *last;
+  bool operator>(const Edge &compare)
+  {
+      return this->weight > compare.weight;
+  } 
 };
-
+template <class T>
 class Edgelist {
     public:
-        Edge * head; // pointer to the header node
-        Edge * tail; // pointer to the trailer node
+    struct indata
+        {
+            T data;
+            indata *next,*last;
+            
+        };
+        indata * head; // pointer to the header node
+        indata * tail; // pointer to the trailer node
         size_t nodeCount; // keep track of number of nodes
+        Edgelist(); 
+        bool empty();
+        void push_back(const T &);
+        size_t size();
+        T& operator[](const int &);
+        void insert(const T &); 
+        T pop();
         
-    public:
-        Edgelist() {
+   };
+    template <class T>
+        Edgelist<T>::Edgelist() {
             this->nodeCount = 0;
-            head= new Edge;
-            tail = new Edge;
+            head= new indata;
+            tail = new indata;
             head->next = tail;
             tail->next = NULL;
             head->last =NULL;
             tail->last = head;
         }
-    
-        bool empty() const {
+
+        template <class T>
+        bool Edgelist<T>::empty()
+         {
             return this->nodeCount == 0;
         }
+        
+        
     
         // adds an element to the end (insert end)
-        void push_back(int src ,int des ,int weight) {
-            Edge *prior, *knew;
+        template <class T>
+        void Edgelist<T>::push_back(const T &newdata)
+         {
+            indata *prior, *knew;
             prior = tail->last;
-            knew = new Edge;
+            knew = new indata;
             prior->next = knew;
             tail->last = knew;
             knew->next = tail;
             knew->last = prior;
-            knew->src = src;
-            knew->weight = weight;
-            knew->des = des;
+            knew->data = newdata;
             nodeCount++;
         }
     
        
         
         // return the size of the list
-        size_t size() {
+        template <class T>
+        size_t Edgelist<T>::size() {
             return this->nodeCount;
         }
 
-        // return string representation of linked list
-        string toString() {
-            stringstream ss;
-            ss << "[";
-            Edge * curr = head->next; // ignore header and stop before trailer
-            while (curr != tail) {
-                ss << " " << curr->src << curr->des << curr->weight;
-                curr = curr->next;
-            }
-            ss << " ]";
-            return ss.str();
-        }
-        Edge pop()
+        template <class T>
+        T &Edgelist<T>::operator[](const int &i) 
         {
-            Edge *prior, *next;
+            if (!empty())
+            {
+                indata *current =head->next; 
+                for (int z=0 ; z<i ;z++)
+                {
+                    current = current->next;
+                }
+                return current->data;
+
+            }
+            else {
+                cerr <<"index out of bound"<<endl;
+                exit(1);
+            }
+        }
+
+        template <class T>
+        T Edgelist<T>::pop()
+        {
+            indata *prior, *next;
             prior =  head->next;
             next = prior->next;
             head->next = next;
             next->last = head;
-            Edge tempedge ;
-            tempedge.src = prior->src;
-            tempedge.des =prior->des;
-            tempedge.weight= prior->weight;
+            T retrundata = prior->data;
             delete prior;
-            return tempedge;
+            return retrundata;
         }
     
     
-       
-        void insert(int src ,int des ,int weight)
+       template<class T>
+        void Edgelist<T>::insert( const T &data)
         {
-            Edge *prior, *knew, *next;
-            knew= new Edge;
-            knew->src =src;
-            knew->weight = weight;
-            knew->des = des;
+            indata *prior, *knew, *next;
+            knew= new indata;
+            knew->data = data;
             prior =head;
             next = head->next;
-            while(next != tail && knew->weight < next->weight)
+            while(next != tail && knew->data > next->data)
             {
                 prior = next;
                 next = next->next;
@@ -139,7 +166,7 @@ class Edgelist {
              prior->next = knew;
              knew->last=prior;
              knew->next =next;
-             next->last = knew;       
+             next->last = knew; 
+             nodeCount++;
+             
         }
-
-};
