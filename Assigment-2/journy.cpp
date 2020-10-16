@@ -5,6 +5,74 @@
 
 using namespace std;
 
+Edgelist<Edge> neighbors(int node , Edgelist<Edge>& MST)
+{
+    Edgelist<Edge> neighbors;
+    for (int i = 0; i < MST.size() ;i++)
+    {
+        Edge temp_edge = MST[i];
+        if (temp_edge.src == node ||temp_edge.des == node )
+        {
+            neighbors.push_back(temp_edge);
+        }
+    }
+    return neighbors;
+
+}
+
+void DFS(Edgelist<Edge>& MST, int start, int target)
+ {
+    Edgelist<bool> visited; // boolean vector to keep track of visited nodes
+    
+    for(int j =0 ; j<MST.size(); j++)
+    {
+        visited.push_back(false);
+    }
+
+    Edgelist<Edge> vertices;
+     for(int j =0 ; j<MST.size(); j++)
+    {
+        vertices.push_back(MST[j]);
+    }
+    Edge temp_edge;
+    temp_edge.src = start;
+    temp_edge.des = start;
+    temp_edge.weight =0;
+
+    vertices.push_back(temp_edge);
+    while(!vertices.empty()) {
+       temp_edge = vertices.pop(); 
+       int u = temp_edge.src;
+        if (!visited[u]) {
+            cout  << u << " " << temp_edge.des <<' '<<temp_edge. weight << endl;
+            visited[u] = true;
+        }
+
+    if (temp_edge.des == target)
+    {
+        cout << " target = "<< target << ' ' <<endl;
+        break;
+    }
+
+
+
+       Edgelist<Edge> neber = neighbors(u, MST); 
+        for(int i=0; i < neber.size(); i++ )
+        {
+            int v = neber[i].src;
+
+            if (u == v)
+            {
+                v = neber[i].des;
+            }
+            if (!visited[v])
+            {
+                vertices.push_back(neber[i]);
+            }
+        }
+    }
+}
+
 int KruskalMST(Edgelist<Edge>& graph,  int city_id, Edgelist<Edge>& MST) 
 { 
     if (graph.nodeCount == 0)
@@ -45,14 +113,14 @@ int KruskalMST(Edgelist<Edge>& graph,  int city_id, Edgelist<Edge>& MST)
 int main(int argc , char * agrv[])
 {
   char* Locationfile = agrv[1];
-
+  char* start = agrv[2];
   Edgelist<Edge> edgelist;
   Edgelist<string> name;
   Edge edge;
   
 
-  // ifstream  inf("distances.txt");
-  ifstream  inf(Locationfile);
+   ifstream  inf("Testdistances.txt");
+  //ifstream  inf(Locationfile);
   string junkline;
   getline(inf,junkline);
   getline(inf,junkline);
@@ -90,15 +158,7 @@ while (!inf.eof())
 
 Edgelist<Edge>MST;
 KruskalMST(edgelist,city_id,MST);
-int total_weight =0;
-for (int i=0 ; i < MST.size();i++)
-{
-  cout << name[MST[i].src] << " " << name[MST[i].des] << ' ' << MST[i].weight<< endl;
-  total_weight = total_weight +MST[i].weight;
-}
-
-cout << "total Weight : " << total_weight<<endl; 
-
+DFS(MST,1,2);
 
 
 inf.close();
