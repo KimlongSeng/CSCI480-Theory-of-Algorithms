@@ -73,6 +73,7 @@ class Edgelist {
         T& operator[](const int &);
         void insert(const T &); 
         T pop();
+        T backpop();
         
    };
     template <class T>
@@ -144,10 +145,27 @@ class Edgelist {
             next = prior->next;
             head->next = next;
             next->last = head;
+            nodeCount--;
             T retrundata = prior->data;
             delete prior;
             return retrundata;
         }
+
+         template <class T>
+        T Edgelist<T>::backpop()
+        {
+           indata *prior, *next;
+            prior =  tail->last;
+            next = prior->last;
+            next->next = tail;
+            tail->last = next;
+            nodeCount--;
+
+            T retrundata = prior->data;
+            delete prior;
+            return retrundata;
+        }
+
     
     
        template<class T>

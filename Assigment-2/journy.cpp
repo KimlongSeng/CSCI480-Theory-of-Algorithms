@@ -4,15 +4,25 @@
 #include "Edgelist.cpp"
 
 using namespace std;
+//Edgelist<string> name;
 
 Edgelist<Edge> neighbors(int node , Edgelist<Edge>& MST)
 {
+    // cout << "here" <<endl;
     Edgelist<Edge> neighbors;
     for (int i = 0; i < MST.size() ;i++)
     {
         Edge temp_edge = MST[i];
-        if (temp_edge.src == node ||temp_edge.des == node )
+        //  cout << "temp 1"<<temp_edge.src <<endl;
+        if (temp_edge.src == node )
         {
+            swap(temp_edge.src,temp_edge.des);
+            // cout << "temp"<<temp_edge.src <<endl;
+            neighbors.push_back(temp_edge);
+        }
+        else if (node == temp_edge.des)
+        {
+            //  cout << "temp"<<temp_edge.src <<endl;
             neighbors.push_back(temp_edge);
         }
     }
@@ -22,7 +32,8 @@ Edgelist<Edge> neighbors(int node , Edgelist<Edge>& MST)
 
 void DFS(Edgelist<Edge>& MST, int start, int target)
  {
-    Edgelist<bool> visited; // boolean vector to keep track of visited nodes
+    cout <<"here";
+    Edgelist<bool> visited; 
     
     for(int j =0 ; j<MST.size(); j++)
     {
@@ -30,33 +41,28 @@ void DFS(Edgelist<Edge>& MST, int start, int target)
     }
 
     Edgelist<Edge> vertices;
-     for(int j =0 ; j<MST.size(); j++)
-    {
-        vertices.push_back(MST[j]);
-    }
     Edge temp_edge;
+    Edgelist<Edge> path;
+    Edgelist<Edge> Finalpath; 
     temp_edge.src = start;
     temp_edge.des = start;
     temp_edge.weight =0;
 
     vertices.push_back(temp_edge);
     while(!vertices.empty()) {
-       temp_edge = vertices.pop(); 
+       temp_edge = vertices.pop();
+       
        int u = temp_edge.src;
-        if (!visited[u]) {
-            cout  << u << " " << temp_edge.des <<' '<<temp_edge. weight << endl;
-            visited[u] = true;
-        }
+       path.push_back(temp_edge);
+       
 
     if (temp_edge.des == target)
     {
-        cout << " target = "<< target << ' ' <<endl;
         break;
     }
 
-
-
-       Edgelist<Edge> neber = neighbors(u, MST); 
+       Edgelist<Edge> neber = neighbors(u, MST);
+   
         for(int i=0; i < neber.size(); i++ )
         {
             int v = neber[i].src;
@@ -71,6 +77,34 @@ void DFS(Edgelist<Edge>& MST, int start, int target)
             }
         }
     }
+    int last = path[path.size()-1].src;
+    int counter = path.size()-1;
+ 
+
+    Finalpath.push_back(path[counter]);
+    
+    
+    while (last != start && counter >= 0)
+     {
+        counter--;
+        if(last == path[counter].des)
+        {
+           Finalpath.push_back(path[counter]);
+            last = path[counter].src;
+        }
+
+     }
+     
+    while (!Finalpath.empty())
+    {
+        Edge temp_edge2=Finalpath.backpop();
+        //cout<< name[temp_edge2.src] << ' '<< name[temp_edge2.des] <<' '<<name[temp_edge2.weight]<<endl;
+         cout<< temp_edge2.src << ' '<<temp_edge2.des <<' '<<temp_edge2.weight<<endl;
+    }
+
+
+  
+
 }
 
 int KruskalMST(Edgelist<Edge>& graph,  int city_id, Edgelist<Edge>& MST) 
@@ -119,31 +153,38 @@ int main(int argc , char * agrv[])
   Edge edge;
   
 
-   ifstream  inf("Testdistances.txt");
+   ifstream  inf("distances.txt");
   //ifstream  inf(Locationfile);
-  string junkline;
+   string junkline;
   getline(inf,junkline);
   getline(inf,junkline);
   inf >> ws;
   int city_id = 0;
 while (!inf.eof())
 {
+    
   edge.src = city_id;
+  
  
   getline(inf,edge.cityname);
-  inf >> ws;
-  size_t pos = edge.cityname.find('[');
+  //inf >> ws;
+cout << edge.cityname << edge.cityname[0]<<endl;
+  int counter =1;
+// cout << (edge.cityname[0]=='*')<<endl;
+  cout<<"jjjjjjjj"<<endl;
+    char breakit = edge.cityname[0];
+  if (edge.cityname[0]=='*')
+  {
+      cout << ":(";
+   break;
+
+  }
+   size_t pos = edge.cityname.find('[');
   if (pos !=string::npos)
   {
     edge.cityname = edge.cityname.substr(0,pos);
   }
   name.insert(edge.cityname);
-  int counter =1;
-  
-  if (edge.cityname[0] == '*')
-  {
-   break;
-  }
   while(city_id >= counter)
   {
     inf >> edge.weight;
@@ -158,8 +199,20 @@ while (!inf.eof())
 
 Edgelist<Edge>MST;
 KruskalMST(edgelist,city_id,MST);
-DFS(MST,1,2);
+DFS(MST,1,3);
+// cout << " ----------------------"<<endl;
+// for(int i =0 ; i < MST.size(); i++)
+// {
+//     cout << MST[i].src << " " << MST[i].des<< ' ' <<MST[i].weight << endl;
 
+// }
+// int total_weight =0;
+// for (int i=0 ; i < MST.size();i++)
+// {
+//   cout << name[MST[i].src] << " " << name[MST[i].des] << ' ' << MST[i].weight<< endl;
+//   total_weight = total_weight +MST[i].weight;
+// }
+// cout << "total Weight : " << total_weight<<endl; 
 
 inf.close();
 return 0;
