@@ -1,4 +1,6 @@
 /*
+step 2:
+    improvement to quicksort
     middle of 3 : https://tutorialspoint.dev/language/cpp/middle-of-three-using-minimum-comparisons
 */
 #include <iostream>
