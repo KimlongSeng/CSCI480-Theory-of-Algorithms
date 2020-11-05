@@ -1,5 +1,6 @@
   
 //quickSort algorithm source: https://www.hackerearth.com/practice/algorithms/sorting/quick-sort/tutorial/
+// Collaborator: jesse holland
 
 #include <iostream>
 #include <fstream>
@@ -14,6 +15,7 @@ void swap(int *a,int *b)
     *a = *b;
     *b = temp;
 }
+
 
 int partition( int arr[], int index[],int low, int high)
 {

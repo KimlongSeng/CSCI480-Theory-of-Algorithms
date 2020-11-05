@@ -1,10 +1,12 @@
 /*
-step 2:
+step2:
     improvement to quicksort
     middle of 3 : https://tutorialspoint.dev/language/cpp/middle-of-three-using-minimum-comparisons
+    kth element code from: https://www.geeksforgeeks.org/kth-smallestlargest-element-unsorted-array/
+
+
 */
-#include <iostream>
-#include <fstream>
+#include "qsort.h"
 
 using namespace std;
 
@@ -28,8 +30,6 @@ void sort3(int arr[], int index[], int low, int high)
 
 }
 
-
-
 int partition( int arr[], int index[],int low, int high)
 {
     sort3(arr,index,low,high);
@@ -49,9 +49,56 @@ int partition( int arr[], int index[],int low, int high)
         return high_to_low + 1; // return pivot position
 }
 
+int increasing_partition(int arr[], int index[], int low, int high)
+{
+    sort3(arr,index,low,high);
+    int p =arr[index[high]];
+    int high_to_low = low - 1;
+    for (int i = low; i < high; i++)
+    {
+        if (arr[index[i]] <= p )
+        {
+            high_to_low++;
+            swap(index[high_to_low], index[i]);
+        }
+    }
+    swap(index[high_to_low + 1], index[high]);
+    return high_to_low +1;
+}
+
+int kthValue(int arr[], int index[], int low, int high, int k)
+{
+    if (k>0 && k <= high - low +1)
+    {
+        int pos = increasing_partition(arr,index, low , high);
+
+        if(pos - low == k-1)
+        {
+            return arr[index[pos]];
+        }
+        if(pos-low> k-1)
+        { 
+            return kthValue(arr,index, low, pos - 1,k);
+        }
+
+        return kthValue(arr, index, pos+1, high, k-pos+low-1);
+    }
+    return INT_MAX;
+}
+
+void increasing_quicksort(int arr[], int index[], int low, int high)
+{
+    if(low < high)
+    {
+        int p = increasing_partition(arr,index, low,high);
+        increasing_quicksort(arr,index,low, p -1);
+        increasing_quicksort(arr,index, p+1, high);
+    }
+}
+
 void quicksort( int arr[],int index[], int low, int high)
 {
-    if (low <high)
+    if (low < high)
     {
         int p = partition(arr, index, low, high);//stores the position of pivot element
         quicksort(arr, index,low, p-1);//sorts the left side of pivot.
