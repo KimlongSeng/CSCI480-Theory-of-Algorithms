@@ -1,4 +1,4 @@
-#include "linklist.h"
+#include "linkedlist.h"
 
 void List::createNode(string word) { //create new node, inserts at end of list
     node *temp = new node;

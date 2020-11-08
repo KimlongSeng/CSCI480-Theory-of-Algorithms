@@ -1,6 +1,6 @@
-#include "token.h"
-#include "hashTable.h"
-#include "qsort.h"
+#include "token.cpp"
+#include "hashTable.cpp"
+#include "heapsort.h"
 #include <iostream>
 #include <time.h>
 
@@ -11,35 +11,37 @@ int main() {
 	char fname[30];
 	char *word;
 	bool readIn = false;
-    clock_t t;
 	while (choice != 0) {
-		cout << "(1) Enter file name to hash" << endl;
+		cout << endl;
+		cout << "(1) Enter filename.txt to hash" << endl;
 		cout << "(2) Find occurance of word in table" << endl;
-		cout << "(3) Display 150 most common words" << endl;
-        cout << "(4) Enter number of elements to sort" << endl;
+		cout << "(3) Display 150 most common and least common words" << endl;
 		cout << "(0) Quit program" << endl;
-		cout << "Enter choice: ";
+		cout << "Enter choice[0, 1, 2, 3]: ";
 		cin >> choice;
 		cout << endl;
 		switch (choice) {
 		case 1:
-			cout << "Enter file name: ";
+			cout << "Enter filename.txt : ";
 			cin >> fname;
 			if (openTokenFile(fname)) {
 				readIn = true;
-				t = clock();
+				auto start = chrono::steady_clock::now();
 				while ((word = nextToken()))
 					hashTableInsert(word);
-				t = clock() - t;
-				cout << "Time: " << ((double)t) / CLOCKS_PER_SEC << " seconds" << endl;
+				auto end = chrono::steady_clock::now();
+				cout << "Time spend on hashing = "<< chrono::duration_cast<chrono::microseconds>(end - start).count()<< " microsecond"<<endl;
 				cout << "Finished hashing" << endl;
 				cout << endl;
 				hashTableDump();
+
+			cout << "******************************************************** "<< endl ;
 			}
 			break;
 		case 2:
 			if (!readIn) {
 				cout << "Haven't hashed a file yet!" << endl;
+				cout << "******************************************************** "<< endl ;
 				break;
 			}
 			char temp[30];
@@ -51,36 +53,19 @@ int main() {
 		case 3:
 			if (!readIn) {
 				cout << "Haven't hashed a file yet!" << endl;
+				cout << "******************************************************** "<< endl ;
 				break;
 			}
 			sortTable();
-			cout << "Sorted hash table to 'sortedhash.txt'" << endl;
+			cout << "150 most common used word printed to 'CommonUsedWord.txt'" << endl;
+			cout << "150 most uncommon used word printed to 'UnCommonUsedWord.txt'" << endl;
+			cout << "******************************************************** "<< endl;
 			break;
-        case 4: {
-            int n, k;
-            cout << "Enter number of elements: ";
-            cin >> n;
-            cout << endl;
-            cout << "Enter kth element to find: ";
-            cin >> k;
-            cout << endl;
-            int arr[n], index[n];
-
-            num_gen(arr, index, n);
-            cout << "The " << k << "th value is: " << kthValue(arr, index, 0, n - 1, k) << endl;
-
-            t = clock();
-            increasing_quicksort(arr, index, 0, n-1);
-            t = clock() - t;
-            cout << "Sort time: " << ((double)t) / CLOCKS_PER_SEC << " seconds" << endl;
-            printArr(arr, index, n);
-			cout << "Output sorted contents to 'sortoutput.txt'" << endl;
-            break;
-        }
 		case 0:
 			break;
 		default:
-			cout << "Did not recognize command!" << endl;
+			cout << "****** Please Enter option 0,1,2,3 ********" << endl;
+			cout <<endl;
 			break;
 		}
 	}

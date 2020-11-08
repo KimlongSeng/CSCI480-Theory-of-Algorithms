@@ -1,5 +1,7 @@
-
-//Linkedlist based on: https://www.codementor.io/codementorteam/a-comprehensive-guide-to-implementation-of-singly-linked-list-using-c_plus_plus-ondlm5azr
+/*
+    Linkedlist based on: https://www.codementor.io/codementorteam/a-comprehensive-guide-to-implementation-of-singly-linked-list-using-c_plus_plus-ondlm5azr
+    
+*/
 
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
