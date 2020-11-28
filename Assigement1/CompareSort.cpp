@@ -1,5 +1,6 @@
 #include <iostream>
 using namespace std;
+#inculde <time.h>
 
 void insertion_sort(int a[], int size)
 {

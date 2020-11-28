@@ -50,8 +50,6 @@ int main(int argc , char * agrv[])
   Edgelist<string> name;
   Edge edge;
   
-
-  // ifstream  inf("distances.txt");
   ifstream  inf(Locationfile);
   string junkline;
   getline(inf,junkline);
@@ -99,7 +97,7 @@ for (int i=0 ; i < MST.size();i++)
 
 cout << "total Weight : " << total_weight<<endl; 
 
-
+cout << " ----------------------"<<endl;
 
 inf.close();
 return 0;
